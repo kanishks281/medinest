@@ -120,6 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
 @utility gradient {
   @apply bg-gradient-to-b from-emerald-500 to-teal-400;
 }

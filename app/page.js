@@ -1,20 +1,26 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { ArrowRight, Stethoscope } from "lucide-react";
 import Link from "next/link";
+import { ArrowRight, Stethoscope } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { creditBenefits, features, testimonials } from "@/lib/data";
+import { Badge } from "@/components/ui/badge";
 import Pricing from "@/components/pricing";
+import { creditBenefits, features, testimonials } from "@/lib/data";
+
 export default function Home() {
   return (
     <div className="bg-background">
+      {/* Hero Section */}
       <section className="relative overflow-hidden py-32">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
-              <Badge variant="outline"
-                className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-400 text-sm font-medium">Healthcare made simple</Badge>
+              <Badge
+                variant="outline"
+                className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-400 text-sm font-medium"
+              >
+                Healthcare made simple
+              </Badge>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Connect with doctors <br />
                 <span className="gradient-title">anytime, anywhere</span>
@@ -43,6 +49,7 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+
             <div className="relative h-[400px] lg:h-[500px] rounded-xl overflow-hidden">
               <Image
                 src="/banner2.png"
@@ -54,8 +61,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </section>
+
       {/* Features Section */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
@@ -90,6 +97,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Pricing Section with green medical styling */}
       <section id="pricing" className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -107,9 +116,12 @@ export default function Home() {
               needs
             </p>
           </div>
-          <div>
-            {/*pricing part*/}
+
+          <div className="mx-auto">
+            {/* Clerk Pricing Table */}
             <Pricing />
+
+            {/* Description */}
             <Card className="mt-12 bg-muted/20 border-emerald-900/30">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-white flex items-center">
@@ -147,11 +159,9 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
-
-          
         </div>
       </section>
-       {/* CTA Section with green medical styling */}
+      {/* CTA Section with green medical styling */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <Card className="bg-gradient-to-r from-emerald-900/30 to-emerald-950/20 border-emerald-800/20">
@@ -191,7 +201,6 @@ export default function Home() {
           </Card>
         </div>
       </section>
-
     </div>
   );
 }
