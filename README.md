@@ -14,6 +14,7 @@
 - [Future Roadmap](#future-roadmap)
 - [Contributing](#contributing)
 - [License](#license)
+- [Database Schema](#database-schema)
 
 ---
 
@@ -64,6 +65,133 @@ flowchart TD
 - Video consultations are powered by Vonage Video API.
 - Credits and payouts are managed in-app, with PostgreSQL as the data store.
 - The UI is styled with Tailwind CSS for a modern, responsive experience.
+
+---
+
+## Database Schema
+
+The Medinest platform uses a relational database schema managed by Prisma ORM. The core entities are **User**, **Appointment**, **Availability**, and **CreditTransaction**. Below is a description of each table and their relationships:
+
+### Tables & Fields
+
+#### 1. User
+- `id` (string, PK): Unique identifier for each user.
+- `clerkUserId` (string, unique): Clerk authentication user ID.
+- `email` (string, unique): User's email address.
+- `name` (string): Full name.
+- `imageUrl` (string): Profile image URL.
+- `role` (string): User role (e.g., patient, doctor, admin).
+- `createdAt` (datetime): Account creation timestamp.
+- `updatedAt` (datetime): Last update timestamp.
+- `credits` (int): Credit balance for the user.
+- `specialty` (string): Doctor's specialty (if applicable).
+- `experience` (int): Years of experience (for doctors).
+- `credentialUrl` (string): URL to credentials (for doctors).
+- `description` (string): Profile description.
+- `verificationStatus` (string): Doctor verification status.
+
+#### 2. Appointment
+- `id` (string, PK): Unique appointment ID.
+- `patientId` (string): References `User.id` (patient).
+- `doctorId` (string): References `User.id` (doctor).
+- `startTime` (datetime): Appointment start time.
+- `endTime` (datetime): Appointment end time.
+- `status` (string): Appointment status.
+- `notes` (string): Doctor's notes.
+- `patientDescription` (string): Patient's description/reason for visit.
+- `videoSessionId` (string): Video session identifier.
+- `videoSessionToken` (string): Video session token.
+- `createdAt` (datetime): Creation timestamp.
+- `updatedAt` (datetime): Last update timestamp.
+
+#### 3. Availability
+- `id` (string, PK): Unique availability slot ID.
+- `startTime` (datetime): Slot start time.
+- `endTime` (datetime): Slot end time.
+- `status` (string): Availability status.
+- `doctorId` (string): References `User.id` (doctor).
+
+#### 4. CreditTransaction
+- `id` (string, PK): Unique transaction ID.
+- `userId` (string): References `User.id`.
+- `amount` (int): Credits involved in the transaction.
+- `type` (string): Transaction type (e.g., purchase, spend).
+- `packageId` (string): Related package (if any).
+- `createdAt` (datetime): Transaction timestamp.
+
+### Relationships
+
+- **User–Appointment:**  
+  - A user can be a patient or doctor in many appointments.
+  - Each appointment references one patient and one doctor (both are users).
+
+- **User–Availability:**  
+  - Each doctor (user) can have multiple availability slots.
+
+- **User–CreditTransaction:**  
+  - Each user can have multiple credit transactions.
+
+---
+
+### Example ER Diagram
+
+```mermaid
+erDiagram
+    User {
+      string id PK
+      string clerkUserId
+      string email
+      string name
+      string imageUrl
+      string role
+      datetime createdAt
+      datetime updatedAt
+      int credits
+      string specialty
+      int experience
+      string credentialUrl
+      string description
+      string verificationStatus
+    }
+    Appointment {
+      string id PK
+      string patientId
+      string doctorId
+      datetime startTime
+      datetime endTime
+      string status
+      string notes
+      string patientDescription
+      string videoSessionId
+      string videoSessionToken
+      datetime createdAt
+      datetime updatedAt
+    }
+    Availability {
+      string id PK
+      datetime startTime
+      datetime endTime
+      string status
+      string doctorId
+    }
+    CreditTransaction {
+      string id PK
+      string userId
+      int amount
+      string type
+      string packageId
+      datetime createdAt
+    }
+
+    User ||--o{ Appointment : "as patient"
+    User ||--o{ Appointment : "as doctor"
+    User ||--o{ Availability : ""
+    User ||--o{ CreditTransaction : ""
+    Appointment }o--|| User : "patient"
+    Appointment }o--|| User : "doctor"
+    Availability }o--|| User : "doctor"
+    CreditTransaction }o--|| User : ""
+```
 
 ---
 
